@@ -103,3 +103,9 @@ En la sección 3.1., convertimos la cadena `chr1:3214482-3216968` a un formato t
 
 ### Respuesta ejercicio 4
 
+un opción puede ser con tr
+
+´´´
+nguerrero@nguerrero-VirtualBox:~/4-expresiones-regulares-sed-awk-cris-nestor$ echo "chr1:3214482-3216968" | tr ':' '\t' | tr '-' '\t'
+chr1  3214482  3216968
+´´´
