@@ -73,6 +73,22 @@ Explora el fichero de anotaciones para ver si existen otros gene_ids con muchos 
 
 ### Respuesta ejercicio 2
 
+Para seleccionar los genes_ids que cumplen con esas condiciones usamos grep con el flag -o y la expresión regular:  tras gene_id " cualquier número de caracteres dígeitos o letras\w* 0 y otro o más 0 seguido de cualquier número de dígitos y comillas dobles \d+". La salida la ordenamos con sort y con uniq -c contamos cuantas veces aparece y lo guardamos en un archivo con tee y contamos el número de líneas del archivo. Para el caso del gtf humano se usa zgrep por estar comprimido.
+
+```
+nguerrero@nguerrero-VirtualBox:~/gtfs$ grep -oE 'gene_id "\w*00+\d*"' Drosophila_melanogaster.BDGP6.28.102.gtf | sort | uniq -c | tee gene_ids_droso | wc -l
+183
+```
+```
+nguerrero@nguerrero-VirtualBox:~/gtfs$ zgrep -oE 'gene_id "\w*00+\d*"' Homo_sapiens.GRCh38.102.gtf.gz | sort | uniq -c | tee gene_ids_human | wc -l
+630
+```
+Exploramos otras repeticiones de número haciendo uso de expresiones como 1 {3,} que dentro de la expresiones regular equivale a 3 o más dígitos 1. Escribimos un piplein similar al anterior y vemos como hay muchas gene-ids con repeticiones de números, al menos tres copias 
+
+```
+nguerrero@nguerrero-VirtualBox:~/gtfs$ grep -E 'gene_id "\w*\0{3,}|1{3,}|2{3,}|3{3,}|4{3,}|5{3,}|6{3,}\d*"' Drosophila_melanogaster.BDGP6.28.102.gtf | sort | uniq -c | wc -l
+118756
+```
 
 ## Ejercicio 3
 
