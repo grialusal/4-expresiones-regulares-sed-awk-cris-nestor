@@ -95,8 +95,32 @@ nguerrero@nguerrero-VirtualBox:~/gtfs$ grep -E 'gene_id "\w*\0{3,}|1{3,}|2{3,}|3
 Crea un pipeline que convierta un fichero fasta con secuencias partidas en múltiples líneas en otro sin saltos de línea. 
 Al final, para cada secuencia, imprimirá su nombre y el número de caracteres que tenga. 
 
+
+
+
 ### Respuesta ejercicio 3
 
+Creo un archivo de ejemplo en formato fasta con dos secuencias:
+```
+nguerrero@nguerrero-VirtualBox:~/4-expresiones-regulares-sed-awk-cris-nestor$ cat fasta_ex3 
+>GeneID "001"
+AAAAAA
+TTTTTT
+CCCCCC
+GGGGGG
+
+>GeneID "002"
+ATCGACAGAGTAGAGATAGAC
+ACGTACCAACACACACGTGAC
+ACGTACACAGTGTGTGGACTT
+```
+Utilizo tr con el flag para borrar -d sobre los saltos de líneas \n
+
+```
+nguerrero@nguerrero-VirtualBox:~/4-expresiones-regulares-sed-awk-cris-nestor$ cat "fasta_ex3" | tr -d '\n'  
+>GeneID "001"AAAAAATTTTTTCCCCCCGGGGGG>GeneID "002"ATCGACAGAGTAGAGATAGACACGTACCAACACACACGTGACACGTACACAGTGTGTGGACTT
+```
+Ahora debo imprimir el número de caracteres de la secuencia y el nombre, pero no se me ocurrió como puedo seleccionar cada secuencia por separado.
 
 ## Ejercicio 4
 En la sección 3.1., convertimos la cadena `chr1:3214482-3216968` a un formato tabular con `sed`. Sin embargo, existen otras maneras en las que podríamos haber obtenido el mismo resultado final. ¿Se te ocurren algunas? Recuerda que puedes usar el flag `g`, o puedes encadenar distintas llamadas a `sed` con tuberías si ves que meterlo todo en una única expresión regular se te antoja complicado. 
