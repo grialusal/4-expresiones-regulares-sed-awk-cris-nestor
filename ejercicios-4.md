@@ -100,10 +100,7 @@ nguerrero@nguerrero-VirtualBox:~/gtfs$ grep -E 'gene_id "\w*\0{3,}|1{3,}|2{3,}|3
 118756
 ```
 
-```
-nguerrero@nguerrero-VirtualBox:~/1-toma-de-contacto-cris-nestor$ grep -ci -E '^([qwertyuiopasdfghjklzxcvbnm])\w*\1$' aquella_voluntad.txt 
-0
-```
+
 ## Ejercicio 3
 
 Crea un pipeline que convierta un fichero fasta con secuencias partidas en múltiples líneas en otro sin saltos de línea. 
