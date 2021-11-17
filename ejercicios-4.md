@@ -63,9 +63,19 @@ nguerrero@nguerrero-VirtualBox:~/1-toma-de-contacto-cris-nestor$ grep -oE "\s+s\
 
 Usamos grep con el flag -o para obtener las palabras que sigan la expresion regular: que no comienze por T o t [^tT] seguida de cualquier número de letras \w*, la letra s y después uno o más espacios \s+. Con tee en el pipeline se genera un archivo para consultar la lista y contamos las líneas para tener un idea del número de palabras.
 
+
+
 ```
 nguerrero@nguerrero-VirtualBox:~/1-toma-de-contacto-cris-nestor$ grep -o -E "[^tT]\w*s\s+" aquella_voluntad.txt | tee lista_palabras | wc -l
 200
+```
+6. Todas las palabras que empiezan y acaban por la misma letra (volver a este punto al acabar toda la lección). 
+
+En este caso pienso que un grupo de captura con grep podría hacer el trabajo. Usó los flags de grep: -c para que cuente e -i para que no considera la diferencia de mayúsculas y minúsculas. La expresión regular empieza por ``` ^ ``` indicando principio, despúes paréntesis del grupo de captura y corchetes del rango, donde incluyo todas las letras del teclado para que case con un caracter de esa clase. Despúes vendría qualquier número de letras o dígitos y recuperaríamos lo capturado con \1 al final $. Pero me salen cero resultados, lo que no es cierto. :-(
+
+```
+nguerrero@nguerrero-VirtualBox:~/1-toma-de-contacto-cris-nestor$ grep -ci -E '^([qwertyuiopasdfghjklzxcvbnm])\w*\1$' aquella_voluntad.txt 
+0
 ```
 ## Ejercicio 2
 ¿Cuántos gene_ids existen con varios ceros seguidos en los dos gtfs (Humano y Drosophila)?. ¿Cuáles son? ¿Cuántas veces aparece cada uno en el .gtf dado?
@@ -90,6 +100,10 @@ nguerrero@nguerrero-VirtualBox:~/gtfs$ grep -E 'gene_id "\w*\0{3,}|1{3,}|2{3,}|3
 118756
 ```
 
+```
+nguerrero@nguerrero-VirtualBox:~/1-toma-de-contacto-cris-nestor$ grep -ci -E '^([qwertyuiopasdfghjklzxcvbnm])\w*\1$' aquella_voluntad.txt 
+0
+```
 ## Ejercicio 3
 
 Crea un pipeline que convierta un fichero fasta con secuencias partidas en múltiples líneas en otro sin saltos de línea. 
