@@ -30,6 +30,10 @@ Usamos grep con el flag de contar -c y como argumento usamos o$ que indica la le
 nguerrero@nguerrero-VirtualBox:~/1-toma-de-contacto-cris-nestor$ grep -cE 'o$' aquella_voluntad.txt 
 38
 ```
+
+CORRECCION MYRIAM Y SANDRA: no ha fichaso el fichero original por lo que el numero no es correcto (n=60)pero la orden esta bien 
+nota = 0,42
+
 2. El número de líneas que terminan por `o` o por `a`.
 
 Similar al anterior pero adicionamos |a$ al argumento de grep, para que ademas de las filas que terminan en o también saque aquellas que terminan en a.
@@ -38,6 +42,11 @@ Similar al anterior pero adicionamos |a$ al argumento de grep, para que ademas d
 nguerrero@nguerrero-VirtualBox:~/1-toma-de-contacto-cris-nestor$ grep -cE 'o$|a$' aquella_voluntad.txt 
 85
 ```
+CORRECCION MYRIAM Y SANDRA: no ha utilizado el fichero original por lo que el numero no es correcto (n=119)pero la orden esta bien 
+nota = 0,42
+
+Existe otra forma mas correcta como [oa]$, ya que es mas eficiente por te analiza a la vez si es una o o una a
+
 3. El número de líneas pares que terminan por `o` o por `a`
 
 Generamos un pipeline de dos pasos, el primero es similar al anterior, pero sumamos el flag -n de grep lo que va a adicionar el número de línea a la salida, la segunda parte es otra llamada a grep para que escoja y cuente con el flag -c aquellas líneas que comienzan por cualquier número de digitos \d*, y tienen un número par antes de los dos puntos [02468]: para acabar la línea con cualquier tipo y número de caracteres .*
@@ -46,6 +55,9 @@ Generamos un pipeline de dos pasos, el primero es similar al anterior, pero suma
 nguerrero@nguerrero-VirtualBox:~/1-toma-de-contacto-cris-nestor$ grep -nE “o$|a$” aquella_voluntad.txt | grep "\d*[02468]:.*" -c
 45
 ```
+CORRECCION MYRIAM Y SANDRA: no ha utilizado el fichero original por lo que el numero no es correcto (n=57)pero la orden esta bien aunque es demasiado explicita. Si en realidad quitaras \d* saldria igual pq no hace falta descri¡bir toda la linea.
+nota = 0,42
+
 4. Todas las palabras que empiezan y acaban por `s` (ordenadas alfabéticamente)
 
 Usamos grep de nuevo para que nos de las palabras con el flag -o. La expresión regular se leería del siguiente modo: uno o más espacios \s+ seguidos de de s, después cualquier número de caracteres letra o dígitos \w* , la letra s y después cualquier número de espacios. Esa salida se ordena con sort y se escoge sólo una copia de cada palabra con uniq.  
@@ -59,6 +71,9 @@ nguerrero@nguerrero-VirtualBox:~/1-toma-de-contacto-cris-nestor$ grep -oE "\s+s\
  sombras 
  sus 
 ```
+CORRECCION MYRIAM Y SANDRA: esta bien, pero aparecen menos palabras que si usas otras expresiones,por ejemplo flatarian sembradas, sabemos pero igual tambien puede ser pq no habeis trabajo con el archivo original.
+nota = 0,42
+
 5. Todas las palabras que no empiezan por t y acaban por `s`. (ordenadas por número de línea)
 
 Usamos grep con el flag -o para obtener las palabras que sigan la expresion regular: que no comienze por T o t [^tT] seguida de cualquier número de letras \w*, la letra s y después uno o más espacios \s+. Con tee en el pipeline se genera un archivo para consultar la lista y contamos las líneas para tener un idea del número de palabras.
@@ -69,6 +84,8 @@ Usamos grep con el flag -o para obtener las palabras que sigan la expresion regu
 nguerrero@nguerrero-VirtualBox:~/1-toma-de-contacto-cris-nestor$ grep -o -E "[^tT]\w*s\s+" aquella_voluntad.txt | tee lista_palabras | wc -l
 200
 ```
+CORRECCION MYRIAM Y SANDRA: el comando esta bien pero es el mismo problema de siempre no habeis trabajo el fichero original. 
+nota = 0,42
 6. Todas las palabras que empiezan y acaban por la misma letra (volver a este punto al acabar toda la lección). 
 
 En este caso pienso que un grupo de captura con grep podría hacer el trabajo. Usó los flags de grep: -c para que cuente e -i para que no considera la diferencia de mayúsculas y minúsculas. La expresión regular empieza por ``` ^ ``` indicando principio, despúes paréntesis del grupo de captura y corchetes del rango, donde incluyo todas las letras del teclado para que case con un caracter de esa clase. Despúes vendría qualquier número de letras o dígitos y recuperaríamos lo capturado con \1 al final $. Pero me salen cero resultados, lo que no es cierto. :-(
@@ -77,6 +94,8 @@ En este caso pienso que un grupo de captura con grep podría hacer el trabajo. U
 nguerrero@nguerrero-VirtualBox:~/1-toma-de-contacto-cris-nestor$ grep -ci -E '^([qwertyuiopasdfghjklzxcvbnm])\w*\1$' aquella_voluntad.txt 
 0
 ```
+CORRECCION MYRIAM Y SANDRA: la orden no esta bien pq le estas indicando que tiene que ser la linea, ni al princnipio de la linea.
+
 ## Ejercicio 2
 ¿Cuántos gene_ids existen con varios ceros seguidos en los dos gtfs (Humano y Drosophila)?. ¿Cuáles son? ¿Cuántas veces aparece cada uno en el .gtf dado?
 Explora el fichero de anotaciones para ver si existen otros gene_ids con muchos números seguidos iguales.
@@ -100,13 +119,43 @@ nguerrero@nguerrero-VirtualBox:~/gtfs$ grep -E 'gene_id "\w*\0{3,}|1{3,}|2{3,}|3
 118756
 ```
 
+```
+nguerrero@nguerrero-VirtualBox:~/1-toma-de-contacto-cris-nestor$ grep -ci -E '^([qwertyuiopasdfghjklzxcvbnm])\w*\1$' aquella_voluntad.txt 
+0
+```
+COMENTARIOS MIRIAM Y SANDRA: HAY VARIOS PIPELINE QUE NO SON CORRECTOS LLAMA LA ATENCION \0{3,}|1{3,}|2{3,}|3{3,}|4{3,}|5{3,}|6{3,}\d*
+abenito@cpg3:~/sesion-iv/gtfs$ grep -v "^#" Drosophila_melanogaster.BDGP6.28.102.gtf | wc -l
+543508
+abenito@cpg3:~/sesion-iv/gtfs$ grep -Eo 'gene_id "\w+"' Drosophila_melanogaster.BDGP6.28.102.gtf | sort | uniq | wc -l
+17807
 
+abenito@cpg3:~/sesion-iv/gtfs$ zgrep -v "^#" Homo_sapiens.GRCh38.102.gtf.gz | wc -l
+3010595
+abenito@cpg3:~/sesion-iv/gtfs$ zgrep -Eo 'gene_id "\w+"' Homo_sapiens.GRCh38.102.gtf.gz | sort -u | wc -l
+60675
+abenito@cpg3:~/sesion-iv/gtfs$ grep -Eo 'gene_id "\w*0{3}\w*"' Drosophila_melanogaster.BDGP6.28.102.gtf | sed -E 's/gene_id "(\w+)"/\1/' | sort | uniq -c | sort -nr > Drosophila-gene_ids-dist-ordenada.txt
+abenito@cpg3:~/sesion-iv/gtfs$ wc -l Drosophila-gene_ids-dist-ordenada.txt
+1038 Drosophila-gene_ids-dist-ordenada.txt
+abenito@cpg3:~/sesion-iv/gtfs$ head -n5 Drosophila-gene_ids-dist-ordenada.txt
+   1204 FBgn0003429
+    705 FBgn0260003
+    703 FBgn0001991
+    602 FBgn0001624
+    597 FBgn0005536
+    
+    abenito@cpg3:~/sesion-iv/gtfs$ zgrep -Eo 'gene_id "\w*0{3}\w*"' Homo_sapiens.GRCh38.102.gtf.gz | sed -E 's/gene_id "(\w+)"/\1/' | sort | uniq -c | sort -nr > HomoSapiens-gene_ids-dist-ordenada.txt
+abenito@cpg3:~/sesion-iv/gtfs$ wc -l HomoSapiens-gene_ids-dist-ordenada.txt
+60675 HomoSapiens-gene_ids-dist-ordenada.txt
+abenito@cpg3:~/sesion-iv/gtfs$ head -n5 HomoSapiens-gene_ids-dist-ordenada.txt
+   7081 ENSG00000145362
+   4603 ENSG00000109339
+   4369 ENSG00000156113
+   3439 ENSG00000155657
+   3058 ENSG00000224078
 ## Ejercicio 3
 
 Crea un pipeline que convierta un fichero fasta con secuencias partidas en múltiples líneas en otro sin saltos de línea. 
 Al final, para cada secuencia, imprimirá su nombre y el número de caracteres que tenga. 
-
-
 
 
 ### Respuesta ejercicio 3
@@ -133,6 +182,10 @@ nguerrero@nguerrero-VirtualBox:~/4-expresiones-regulares-sed-awk-cris-nestor$ ca
 ```
 Ahora debo imprimir el número de caracteres de la secuencia y el nombre, pero no se me ocurrió como puedo seleccionar cada secuencia por separado.
 
+COMENTARIO MIRIAM Y SANDRA:El final se puede hacer con sed 
+benito@cpg3:~/sesion-iv/fasta$ sed -E 's/^(>.+)/$\1$/' covid-samples.fasta | head -n5
+nota: 1,25
+
 ## Ejercicio 4
 En la sección 3.1., convertimos la cadena `chr1:3214482-3216968` a un formato tabular con `sed`. Sin embargo, existen otras maneras en las que podríamos haber obtenido el mismo resultado final. ¿Se te ocurren algunas? Recuerda que puedes usar el flag `g`, o puedes encadenar distintas llamadas a `sed` con tuberías si ves que meterlo todo en una única expresión regular se te antoja complicado. 
 
@@ -144,3 +197,5 @@ un opción puede ser con tr
 nguerrero@nguerrero-VirtualBox:~/4-expresiones-regulares-sed-awk-cris-nestor$ echo "chr1:3214482-3216968" | tr ':' '\t' | tr '-' '\t'
 chr1  3214482  3216968
 ```
+COMENTARIO MYRIAM Y SANDRA: Este ejercicio estaba hecho y corregido en clase con sed.
+nota: 1.25
